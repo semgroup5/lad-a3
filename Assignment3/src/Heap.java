@@ -22,19 +22,30 @@ public class Heap<E extends Comparable<E>>{
     public E removeMin(){
         // This works but is way too slow!
         int minix = 0;
-        for(int i = 1;i<size;i++)
-            if (arr[i].compareTo(arr[minix]) < 0)
-                minix = i;
+//        for(int i = 1;i<size;i++)
+//            if (arr[i].compareTo(arr[minix]) < 0)
+//                minix = i;
         
         E min = arr[minix];
         
-        int i;
-        for(i = minix;i<size-1;i++)
-            arr[i]=arr[i+1];
-        arr[size-1]=null;
-        
+//        int i;
+//        for(i = minix;i<size-1;i++)
+//            arr[i]=arr[i+1];
+//        arr[size-1]=null;
+
+        E temp = arr[size];
+        arr[minix] = arr[size];
+        arr[size] = null;
         size--;
-        
+
+        int childLx = 0 * 2 + 1;
+        int childRx = 0 * 2 + 2;
+        int minChild = 0;
+        if(arr[childLx].compareTo(arr[childRx]) > 0) minChild = childRx;
+        else if(arr[childLx].compareTo(arr[childRx]) < 0) minChild = childLx;
+        else minChild = childLx;
+
+        while(arr[minChild].compareTo(arr))
         return min;   
         
     }
