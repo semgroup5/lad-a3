@@ -14,6 +14,14 @@ public class Test {
         test.add(3);
 
         test.removeMin();
+        test.removeMin();
+        test.removeMin();
+        test.removeMin();
+        test.removeMin();
+        test.removeMin();
+        test.removeMin();
+
+
 
 //        test.removeMin();
 

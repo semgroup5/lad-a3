@@ -44,9 +44,15 @@ public class Heap<E extends Comparable<E>>{
         int childLx = 0 * 2 + 1;
         int childRx = 0 * 2 + 2;
         int minChild = 0;
-        if(arr[childLx].compareTo(arr[childRx]) > 0) minChild = childRx;
-        else if(arr[childLx].compareTo(arr[childRx]) < 0) minChild = childLx;
-        else minChild = childLx;
+
+            if (!(arr[childLx] == null) && !(arr[childRx] == null)) {
+                if (arr[childLx].compareTo(arr[childRx]) > 0) minChild = childRx;
+                else if (arr[childLx].compareTo(arr[childRx]) < 0) minChild = childLx;
+                else minChild = childLx;
+            } else if (arr[childLx] != null && arr[childRx] == null) {
+                minChild = childLx;
+            }
+        else return arr[0];
 
         while(arr[minChild].compareTo(arr[minix]) < 0){
             E temp1 = arr[minix];
@@ -54,15 +60,21 @@ public class Heap<E extends Comparable<E>>{
             arr[minChild] = temp1;
             minix = minChild;
 
+
             childLx = minix * 2 + 1;
             childRx = minix * 2 + 2;
-
-            if(arr[childLx].compareTo(arr[childRx]) > 0) minChild = childRx;
-            else if(arr[childLx].compareTo(arr[childRx]) < 0) minChild = childLx;
-            else minChild = childLx;
+            if (childLx <= size) {
+                if (!(arr[childLx] == null) && !(arr[childRx] == null)) {
+                    if (arr[childLx].compareTo(arr[childRx]) > 0) minChild = childRx;
+                    else if (arr[childLx].compareTo(arr[childRx]) < 0) minChild = childLx;
+                    else minChild = childLx;
+                } else if (arr[childLx] != null && arr[childRx] == null) {
+                    minChild = childLx;
+                } else ;
+            }
         }
-        return min;   
-        
+        return min;
+
     }
     
     
