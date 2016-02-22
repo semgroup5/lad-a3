@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Heap<E extends Comparable<E>>{
     
     private E[] arr;
@@ -38,6 +40,7 @@ public class Heap<E extends Comparable<E>>{
         arr[size] = null;
         size--;
 
+
         int childLx = 0 * 2 + 1;
         int childRx = 0 * 2 + 2;
         int minChild = 0;
@@ -45,7 +48,19 @@ public class Heap<E extends Comparable<E>>{
         else if(arr[childLx].compareTo(arr[childRx]) < 0) minChild = childLx;
         else minChild = childLx;
 
-        while(arr[minChild].compareTo(arr))
+        while(arr[minChild].compareTo(arr[minix]) < 0){
+            E temp1 = arr[minix];
+            arr[minix] = arr[minChild];
+            arr[minChild] = temp1;
+            minix = minChild;
+
+            childLx = minix * 2 + 1;
+            childRx = minix * 2 + 2;
+
+            if(arr[childLx].compareTo(arr[childRx]) > 0) minChild = childRx;
+            else if(arr[childLx].compareTo(arr[childRx]) < 0) minChild = childLx;
+            else minChild = childLx;
+        }
         return min;   
         
     }
@@ -67,17 +82,19 @@ public class Heap<E extends Comparable<E>>{
             parentIndex = (size - 2) / 2;
         }else{
             parentIndex = (size - 1) / 2;
+            System.out.println("parent index = " + parentIndex);
         }
 
         while(elem.compareTo(arr[parentIndex]) < 0 && !(parentIndex < 0)){
             E temp = arr[parentIndex];
             arr[parentIndex] = elem;
-            arr[size] = temp;
+            arr[size-1] = temp;
+
 
             if((parentIndex%2==0)){
-                parentIndex = (size - 2) / 2;
+                parentIndex = ((size-1) - 2) / 2;
             }else{
-                parentIndex = (size - 1) / 2;
+                parentIndex = ((size-1) - 1) / 2;
             }
         }
 
@@ -90,6 +107,10 @@ public class Heap<E extends Comparable<E>>{
     
     public boolean isEmpty(){
         return size <= 0;
+    }
+
+    public String toString(){
+        return Arrays.toString(arr);
     }
     
 }
