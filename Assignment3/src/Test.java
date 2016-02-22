@@ -13,6 +13,8 @@ public class Test {
         test.add(5);
         test.add(3);
 
+        test.removeMin();
+
 //        test.removeMin();
 
         System.out.println(test.toString());

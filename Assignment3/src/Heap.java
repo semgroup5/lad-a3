@@ -35,9 +35,9 @@ public class Heap<E extends Comparable<E>>{
 //            arr[i]=arr[i+1];
 //        arr[size-1]=null;
 
-        E temp = arr[size];
-        arr[minix] = arr[size];
-        arr[size] = null;
+        E temp = arr[size-1];
+        arr[minix] = arr[size-1];
+        arr[size-1] = null;
         size--;
 
 
@@ -77,7 +77,6 @@ public class Heap<E extends Comparable<E>>{
         arr[size] = elem;
         size++;
         int parentIndex = 0;
-        int currentIndex = 0;
         int elemIndex= size -1;
         // Something more should probably be done here?
         if(size > 0) {
