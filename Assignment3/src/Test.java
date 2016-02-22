@@ -5,9 +5,15 @@ public class Test {
 
     public static void main(String[] args){
     Heap test = new Heap();
-        test.add(10);
-        test.add(8);
+        test.add(2);
+        test.add(6);
+      test.add(4);
         test.add(1);
+       test.add(7);
+        test.add(5);
+        test.add(3);
+
+//        test.removeMin();
 
         System.out.println(test.toString());
     }

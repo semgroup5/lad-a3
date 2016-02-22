@@ -78,6 +78,7 @@ public class Heap<E extends Comparable<E>>{
         size++;
         int parentIndex = 0;
         int currentIndex = 0;
+        int elemIndex= size -1;
         // Something more should probably be done here?
         if(size > 0) {
             if (((size-1) % 2 == 0)) {
@@ -85,19 +86,20 @@ public class Heap<E extends Comparable<E>>{
             } else {
                 parentIndex = ((size-1) - 1) / 2;
             }
-            System.out.println(parentIndex);
+
         }
-        while(!(parentIndex < 0) && elem.compareTo(arr[parentIndex]) < 0){
+        while((!(parentIndex < 0)) && elem.compareTo(arr[parentIndex]) < 0){
             E temp = arr[parentIndex];
-            arr[parentIndex] = arr[size-1];
-            arr[size-1] = temp;
+            arr[parentIndex] = arr[elemIndex];
+            arr[elemIndex] = temp;
+            elemIndex = parentIndex;
 
 
 
-            if((parentIndex%2==0)){
-                parentIndex = ((size-1) - 2) / 2;
+            if((elemIndex%2==0)){
+                parentIndex = ((elemIndex) - 2) / 2;
             }else{
-                parentIndex = ((size-1) - 1) / 2;
+                parentIndex = ((elemIndex) - 1) / 2;
             }
         }
 
