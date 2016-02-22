@@ -41,13 +41,15 @@ public class Heap<E extends Comparable<E>>{
         size--;
 
 
-        int childLx = 0 * 2 + 1;
-        int childRx = 0 * 2 + 2;
+        int childLx = 1;
+        int childRx = 2;
         int minChild = 0;
+       if(!(childLx>size-1) ||!(childRx>size-1))
         if(arr[childLx].compareTo(arr[childRx]) > 0) minChild = childRx;
         else if(arr[childLx].compareTo(arr[childRx]) < 0) minChild = childLx;
         else minChild = childLx;
 
+        if(!(minChild>size-1))
         while(arr[minChild].compareTo(arr[minix]) < 0){
             E temp1 = arr[minix];
             arr[minix] = arr[minChild];
@@ -56,6 +58,7 @@ public class Heap<E extends Comparable<E>>{
 
             childLx = minix * 2 + 1;
             childRx = minix * 2 + 2;
+
 
             if(arr[childLx].compareTo(arr[childRx]) > 0) minChild = childRx;
             else if(arr[childLx].compareTo(arr[childRx]) < 0) minChild = childLx;

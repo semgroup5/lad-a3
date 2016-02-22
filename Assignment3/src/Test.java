@@ -5,7 +5,7 @@ public class Test {
 
     public static void main(String[] args){
     Heap test = new Heap();
-        test.add(2);
+        test.add(8);
         test.add(6);
       test.add(4);
         test.add(1);
@@ -15,7 +15,8 @@ public class Test {
 
         test.removeMin();
 
-//        test.removeMin();
+
+        test.removeMin();
 
         System.out.println(test.toString());
     }
