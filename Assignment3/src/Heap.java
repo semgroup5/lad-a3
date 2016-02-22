@@ -12,13 +12,7 @@ public class Heap<E extends Comparable<E>>{
     
     
     public E findMin(){
-        // This works but is way too slow!
-        E min = null;
-        for(E e : arr)
-            if (min == null || e.compareTo(min)<0)
-                min = e;
-        
-        return min;        
+        return arr[0];
     }
     public E removeMin(){
         // This works but is way too slow!
