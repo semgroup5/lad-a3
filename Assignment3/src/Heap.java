@@ -49,10 +49,28 @@ public class Heap<E extends Comparable<E>>{
         }
 
         arr[size] = elem;
-        
-        // Something more should probably be done here?
-        
         size++;
+        int parentIndex;
+        // Something more should probably be done here?
+        if((size%2==0)){
+            parentIndex = (size - 2) / 2;
+        }else{
+            parentIndex = (size - 1) / 2;
+        }
+
+        while(elem.compareTo(arr[parentIndex]) < 0 && !(parentIndex < 0)){
+            E temp = arr[parentIndex];
+            arr[parentIndex] = elem;
+            arr[size] = temp;
+
+            if((parentIndex%2==0)){
+                parentIndex = (size - 2) / 2;
+            }else{
+                parentIndex = (size - 1) / 2;
+            }
+        }
+
+
     }
     
     public int size(){

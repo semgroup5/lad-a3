@@ -7,17 +7,20 @@ public class Gothenburg {
     public static final TramNetwork GOTHENBURG;
 
     public static void main(String[] args){
-        findGBG(0,"Centralstationen","Chalmers");
-        
-        findGBG(0,"Lilla Bommen","Chalmers");
-        
-        findGBG(23*60+44,"Lilla","Vasa V");
-        
-        findGBG(23*60+50,"Hjal","Chal");
-        
-        findGBG(23*60+50,"Hjal","Kor");
-        
-        findGBG(23*60+50,"Kor","Chal");
+
+            findGBG(0,"Centralstationen","Chalmers");
+
+            findGBG(0,"Lilla Bommen","Chalmers");
+
+            findGBG(23*60+44,"Lilla","Vasa V");
+
+            findGBG(23*60+50,"Hjal","Chal");
+
+            findGBG(23*60+50,"Hjal","Kor");
+
+            findGBG(23*60+50,"Kor","Chal");
+
+
         
     }
     
@@ -51,7 +54,7 @@ public class Gothenburg {
        , Kungsportsplatsen
        , Valand
        , Vasaplatsen
-       , Gronsakstorget("Grönsakstorget")
+       , Gronsakstorget("Grï¿½nsakstorget")
        , Kapellplatsen
        , Chalmers
        , Domkyrkan
@@ -59,7 +62,7 @@ public class Gothenburg {
        , Frihamnen
        , HjalmarBrantingsplatsen("Hjalmar Brantingsplatsen")
        , Berzeligatan
-       , Korsvagen("Korsvägen")
+       , Korsvagen("Korsvï¿½gen")
        , VasaViktoriagatan("Vasa Viktoriagatan")
        ;
        
