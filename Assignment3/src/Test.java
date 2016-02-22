@@ -20,11 +20,13 @@ public class Test {
         test.removeMin();
         test.removeMin();
         test.removeMin();
-
-
-
-
         test.removeMin();
+        test.removeMin();
+
+
+
+
+
 
         System.out.println(test.toString());
     }

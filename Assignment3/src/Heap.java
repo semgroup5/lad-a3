@@ -20,7 +20,6 @@ public class Heap<E extends Comparable<E>>{
         
         return min;        
     }
-    
     public E removeMin(){
         // This works but is way too slow!
         int minix = 0;
@@ -34,16 +33,18 @@ public class Heap<E extends Comparable<E>>{
 //        for(i = minix;i<size-1;i++)
 //            arr[i]=arr[i+1];
 //        arr[size-1]=null;
-
-        E temp = arr[size-1];
-        arr[minix] = arr[size-1];
-        arr[size-1] = null;
-        size--;
+        if (!(arr[0] == null)) {
 
 
-        int childLx = 0 * 2 + 1;
-        int childRx = 0 * 2 + 2;
-        int minChild = 0;
+            E temp = arr[size - 1];
+            arr[minix] = arr[size - 1];
+            arr[size - 1] = null;
+            size--;
+
+
+            int childLx = 0 * 2 + 1;
+            int childRx = 0 * 2 + 2;
+            int minChild = 0;
 
             if (!(arr[childLx] == null) && !(arr[childRx] == null)) {
                 if (arr[childLx].compareTo(arr[childRx]) > 0) minChild = childRx;
@@ -51,29 +52,29 @@ public class Heap<E extends Comparable<E>>{
                 else minChild = childLx;
             } else if (arr[childLx] != null && arr[childRx] == null) {
                 minChild = childLx;
-            }
-        else return arr[0];
+            } else return arr[0];
 
-        while(arr[minChild].compareTo(arr[minix]) < 0){
-            E temp1 = arr[minix];
-            arr[minix] = arr[minChild];
-            arr[minChild] = temp1;
-            minix = minChild;
+            while (arr[minChild].compareTo(arr[minix]) < 0) {
+                E temp1 = arr[minix];
+                arr[minix] = arr[minChild];
+                arr[minChild] = temp1;
+                minix = minChild;
 
 
-            childLx = minix * 2 + 1;
-            childRx = minix * 2 + 2;
-            if (childLx <= size) {
-                if (!(arr[childLx] == null) && !(arr[childRx] == null)) {
-                    if (arr[childLx].compareTo(arr[childRx]) > 0) minChild = childRx;
-                    else if (arr[childLx].compareTo(arr[childRx]) < 0) minChild = childLx;
-                    else minChild = childLx;
-                } else if (arr[childLx] != null && arr[childRx] == null) {
-                    minChild = childLx;
-                } else ;
+                childLx = minix * 2 + 1;
+                childRx = minix * 2 + 2;
+                if (childLx <= size) {
+                    if (!(arr[childLx] == null) && !(arr[childRx] == null)) {
+                        if (arr[childLx].compareTo(arr[childRx]) > 0) minChild = childRx;
+                        else if (arr[childLx].compareTo(arr[childRx]) < 0) minChild = childLx;
+                        else minChild = childLx;
+                    } else if (arr[childLx] != null && arr[childRx] == null) {
+                        minChild = childLx;
+                    } else ;
+                }
             }
         }
-        return min;
+            return min;
 
     }
     
