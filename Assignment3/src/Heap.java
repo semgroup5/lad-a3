@@ -12,7 +12,7 @@ public class Heap<E extends Comparable<E>>{
     
     
     public E findMin(){
-        //is known that the min element in a heap is the root
+        //is known that the min element in a heap is the root.
         return arr[0];
     }
 
