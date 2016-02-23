@@ -64,7 +64,7 @@ public class TramNetwork{
     /** Represents a tram moving from one stop to the next, without stopping.
      * Includes the time (in minutes) it takes for the tram to move.
      * */
-    public class TramConnection {
+    public class TramConnection implements Comparable<TramConnection>{
         public final Tram tram;
         public final Station from;
         
@@ -80,6 +80,11 @@ public class TramNetwork{
             this.to = to;
             this.timeTaken = time;
 
+        }
+
+        @Override
+        public int compareTo(TramConnection tramConnection) {
+            return this.to.compareTo(tramConnection.to);
         }
     }
     

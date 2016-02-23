@@ -7,10 +7,42 @@ public class TramFinder {
     
     // Assignment: Implement this!
     public static TramArrival[] fastFindRoute(TramNetwork nw, int starttime, TramNetwork.Station from, TramNetwork.Station to){
-       System.out.println("Fast finding is not yet implemented...");
-       return null;
+
+        Heap<TramArrival> edges = new Heap<TramArrival>();
+
+        //Kickstart the algorithm with all possibilities from the start
+        for(TramNetwork.TramConnection tramConnection : from.tramsFrom) {
+            edges.add(new TramArrival(tramConnection, starttime));
+        }
+
+
+
+        System.out.println("Fast finding is not yet implemented...");
+        return null;
     }
-    
+
+    public static class TramConnectionEdge implements Comparable<TramConnectionEdge>{
+        public final TramNetwork.TramConnection tc;
+        public int duration;
+        public TramNetwork.TramConnection previous;
+
+        public TramConnectionEdge(TramNetwork.TramConnection tc, int duration, TramNetwork.TramConnection previous)
+        {
+            this.tc = tc;
+            this.duration = duration;
+            this.previous = previous;
+        }
+
+        public int compareTo(TramConnectionEdge tramArrivalEdge) {
+            return this.tc.compareTo(tramArrivalEdge.tc);
+        }
+    }
+
+    ////////////////////////////////
+    //   Below is the provided    //
+    //  code from the assignment  //
+    ////////////////////////////////
+
     // This works but is not fast enough. 
     public static TramArrival[] findRoute(TramNetwork nw, int starttime, TramNetwork.Station from, TramNetwork.Station to){
        Finder f = new Finder(nw); 
@@ -78,6 +110,16 @@ public class TramFinder {
             this.station = station;
             this.time = time;
         }
+
+        public TramArrival(TramNetwork.TramConnection tramConnection, int startTime)
+        {
+            this.tram = tramConnection.tram;
+            this.station = tramConnection.to;
+
+            int waitTime = this.tram.waitingTime(startTime, this.station);
+
+            this.time = startTime + waitTime;
+        }
         
         public String toString(){
             int timeofday = time % (60*24),
@@ -92,8 +134,6 @@ public class TramFinder {
             return time - t.time;
         }
     }
-    
-    
 }
 
 
