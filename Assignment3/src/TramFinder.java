@@ -31,7 +31,7 @@ public class TramFinder {
             {
                 NodeLengthEdgeTriplet NLE = new NodeLengthEdgeTriplet(
                     connection.to,
-                    current.time + connection.timeTaken + connection.tram.waitingTime(current.time, connection.from),
+                    current.time + connection.timeTaken + connection.tram.waitingTime(current.time, current.node),
                     connection);
 
                 tripHeap.add(NLE);
@@ -152,50 +152,6 @@ public class TramFinder {
             return time - t.time;
         }
     }
-
-    /** Represents a single arrival/departure of a tram at/from a station*/
-    /*public static class TramTrip implements Comparable<TramTrip>{
-        public final TramNetwork.TramConnection previous;
-        public final TramNetwork.Tram tram;
-        public final TramNetwork.Station from;
-        public final TramNetwork.Station to;
-
-        / Absolute time, in minutes from 00:00, possibly exceeds 24*60
-        public final int time;
-
-        public TramTrip(TramNetwork.Tram tram, TramNetwork.Station from, TramNetwork.Station to, int time) {
-            this.tram = tram;
-            this.from = from;
-            this.to = to;
-            this.time = time;
-        }
-
-        public TramTrip(TramNetwork.TramConnection tramConnection, TramNetwork.TramConnection previous, int startTime)
-        {
-            this.previous = previous;
-            this.tram = tramConnection.tram;
-            this.from = tramConnection.from;
-            this.to = tramConnection.to;
-
-            int waitTime = this.tram.waitingTime(startTime, this.from);
-
-            this.time = startTime + waitTime;
-        }
-
-
-        public String toString(){
-            int timeofday = time % (60*24),
-                    hour = timeofday/60,
-                    minute = timeofday%60;
-
-            return (hour < 10 ? "0"+hour: hour)+":"+(minute < 10 ? "0"+minute: minute)+", Tram "+tram+" at " + to;
-
-        }
-
-        public int compareTo(TramTrip t) {
-            return time - t.time;
-        }
-    }*/
 
     public static class NodeLengthEdgeTriplet implements Comparable<NodeLengthEdgeTriplet>
     {
