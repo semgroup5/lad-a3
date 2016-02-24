@@ -2,7 +2,7 @@ import java.util.LinkedList;
 
 
 
-public class Gothenburg {
+public class  Gothenburg {
 
     public static final TramNetwork GOTHENBURG;
 
@@ -54,7 +54,7 @@ public class Gothenburg {
        , Kungsportsplatsen
        , Valand
        , Vasaplatsen
-       , Gronsakstorget("Gr�nsakstorget")
+       , Gronsakstorget("Grönsakstorget")
        , Kapellplatsen
        , Chalmers
        , Domkyrkan
@@ -62,7 +62,7 @@ public class Gothenburg {
        , Frihamnen
        , HjalmarBrantingsplatsen("Hjalmar Brantingsplatsen")
        , Berzeligatan
-       , Korsvagen("Korsv�gen")
+       , Korsvagen("Korsvägen")
        , VasaViktoriagatan("Vasa Viktoriagatan")
        ;
        

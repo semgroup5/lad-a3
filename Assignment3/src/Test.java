@@ -31,10 +31,6 @@ public class Test {
 //        test.removeMin();
 
 
-
-
-
-
         System.out.println(test.toString());
     }
 }

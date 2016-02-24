@@ -12,8 +12,13 @@ public class Heap<E extends Comparable<E>>{
     
     
     public E findMin(){
-        //is known that the min element in a heap is the root.
-        return arr[0];
+        // This works but is way too slow!
+        E min = null;
+        for(E e : arr)
+            if (min == null || e.compareTo(min)<0)
+                min = e;
+        
+        return min;        
     }
 
     public E removeMin(){
@@ -137,5 +142,5 @@ public class Heap<E extends Comparable<E>>{
     public String toString(){
         return Arrays.toString(arr);
     }
-    
+
 }

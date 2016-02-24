@@ -1,4 +1,7 @@
+import com.sun.deploy.util.ArrayUtil;
+
 import javax.xml.soap.Node;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,42 +14,63 @@ public class TramFinder {
 
         Heap<NodeLengthEdgeTriplet> tripHeap = new Heap<NodeLengthEdgeTriplet>();
         NodeLengthEdgeTriplet[] nodes = new NodeLengthEdgeTriplet[nw.stations.length];
-        //Kickstart the algorithm with all possibilities from the start
-        for(TramNetwork.TramConnection tramConnection : from.tramsFrom) {
-            tripHeap.add(new NodeLengthEdgeTriplet(tramConnection.to, tramConnection.tram.waitingTime(starttime,tramConnection.to), tramConnection));
-        }
 
         boolean[] visited = new boolean[nw.stations.length];
+
+        //Kickstart the algorithm with all possibilities from the start
+        for(TramNetwork.TramConnection tramConnection : from.tramsFrom) {
+
+            tripHeap.add(new NodeLengthEdgeTriplet(from, tramConnection.tram.waitingTime(starttime,tramConnection.to), tramConnection));
+        }
+
         NodeLengthEdgeTriplet current = null;
         while(!tripHeap.isEmpty())
         {
             current = tripHeap.removeMin();
-            if(current.node == to) {break;} //TODO;
             if(visited[current.node.id]){continue;}
             for (TramNetwork.TramConnection connection: current.node.tramsFrom)
             {
-
-                NodeLengthEdgeTriplet nle = new NodeLengthEdgeTriplet(
+                NodeLengthEdgeTriplet NLE = new NodeLengthEdgeTriplet(
                     connection.to,
                     current.time + connection.timeTaken + connection.tram.waitingTime(current.time, current.node),
                     connection);
 
-                tripHeap.add(nle);
-
-                if(nodes[connection.to.id] == null || nle.compareTo(nodes[connection.to.id]) < 0)
+                tripHeap.add(NLE);
+                if(nodes[connection.to.id] == null || NLE.compareTo(nodes[connection.to.id]) < 0)
                 {
-                    nodes[connection.to.id] = nle;
+                    nodes[connection.to.id] = NLE;
                 }
             }
             visited[current.node.id] = true;
         }
 
+
+
         if(current != null) {
-            System.out.println(current);
+
         }
-        System.out.println("Fast finding is not yet implemented...");
-        return null;
+
+        NodeLengthEdgeTriplet curr = nodes[to.id];
+        int i = 0;
+        TramArrival[] path = new TramArrival[nodes.length];
+        NodeLengthEdgeTriplet[] pathnle = new NodeLengthEdgeTriplet[16];
+        while(!curr.node.equals(from) && i < nodes.length - 1 ) {
+            path[i] = new TramArrival(curr.edge.tram ,curr.node, curr.time);
+            pathnle[i] = curr;
+            i++;
+            curr = nodes[curr.edge.from.id];
+        }
+
+        for (int j = path.length; j == 0; j--){
+            path[j]= path[path.length - j];
+        }
+
+        return path;
+
+
     }
+
+
 
     ////////////////////////////////
     //   Below is the provided    //
@@ -201,7 +225,12 @@ public class TramFinder {
 
         @Override
         public int compareTo(NodeLengthEdgeTriplet nodeLengthEdgeTriplet) {
-            return Integer.compare(this.time, nodeLengthEdgeTriplet.time);
+            return this.time - nodeLengthEdgeTriplet.time;
+        }
+
+        public String toString()
+        {
+            return "Station " + node.name + " : from:  " + edge.from.name + " to " + edge.to.name + " time " + time;
         }
     }
 }
