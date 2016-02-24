@@ -33,9 +33,9 @@ public class TramFinder {
 
                 tripHeap.add(nle);
 
-                if(nle.compareTo(nodes[current.node.id]) < 0)
+                if(nodes[connection.to.id] == null || nle.compareTo(nodes[connection.to.id]) < 0)
                 {
-                    nodes[current.node.id] = nle;
+                    nodes[connection.to.id] = nle;
                 }
             }
             visited[current.node.id] = true;
