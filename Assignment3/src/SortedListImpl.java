@@ -168,7 +168,8 @@ public class SortedListImpl<E extends Comparable<E>> implements SortedList<E> {
     @Override
     //return true if we find elem in the list.
     public boolean contains(E elem) {
-       return list[bSearch(0, count-1, elem, false)] == elem;
+        if(count == 0) return false;
+        return list[bSearch(0, count-1, elem, false)] == elem;
     }
 
     @Override

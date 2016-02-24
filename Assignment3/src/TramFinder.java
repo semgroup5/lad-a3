@@ -1,3 +1,4 @@
+import javax.xml.soap.Node;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,34 +9,43 @@ public class TramFinder {
     // Assignment: Implement this!
     public static TramArrival[] fastFindRoute(TramNetwork nw, int starttime, TramNetwork.Station from, TramNetwork.Station to){
 
-        Heap<TramArrival> edges = new Heap<TramArrival>();
-
+        Heap<NodeLengthEdgeTriplet> tripHeap = new Heap<NodeLengthEdgeTriplet>();
+        NodeLengthEdgeTriplet[] nodes = new NodeLengthEdgeTriplet[nw.stations.length];
         //Kickstart the algorithm with all possibilities from the start
         for(TramNetwork.TramConnection tramConnection : from.tramsFrom) {
-            edges.add(new TramArrival(tramConnection, starttime));
+            tripHeap.add(new NodeLengthEdgeTriplet(tramConnection.to, tramConnection.tram.waitingTime(starttime,tramConnection.to), tramConnection));
         }
 
+        boolean[] visited = new boolean[nw.stations.length];
+        NodeLengthEdgeTriplet current = null;
+        while(!tripHeap.isEmpty())
+        {
+            current = tripHeap.removeMin();
+            if(current.node == to) {break;} //TODO;
+            if(visited[current.node.id]){continue;}
+            for (TramNetwork.TramConnection connection: current.node.tramsFrom)
+            {
 
+                NodeLengthEdgeTriplet nle = new NodeLengthEdgeTriplet(
+                    connection.to,
+                    current.time + connection.timeTaken + connection.tram.waitingTime(current.time, current.node),
+                    connection);
 
+                tripHeap.add(nle);
+
+                if(nle.compareTo(nodes[current.node.id]) < 0)
+                {
+                    nodes[current.node.id] = nle;
+                }
+            }
+            visited[current.node.id] = true;
+        }
+
+        if(current != null) {
+            System.out.println(current);
+        }
         System.out.println("Fast finding is not yet implemented...");
         return null;
-    }
-
-    public static class TramConnectionEdge implements Comparable<TramConnectionEdge>{
-        public final TramNetwork.TramConnection tc;
-        public int duration;
-        public TramNetwork.TramConnection previous;
-
-        public TramConnectionEdge(TramNetwork.TramConnection tc, int duration, TramNetwork.TramConnection previous)
-        {
-            this.tc = tc;
-            this.duration = duration;
-            this.previous = previous;
-        }
-
-        public int compareTo(TramConnectionEdge tramArrivalEdge) {
-            return this.tc.compareTo(tramArrivalEdge.tc);
-        }
     }
 
     ////////////////////////////////
@@ -111,16 +121,6 @@ public class TramFinder {
             this.time = time;
         }
 
-        public TramArrival(TramNetwork.TramConnection tramConnection, int startTime)
-        {
-            this.tram = tramConnection.tram;
-            this.station = tramConnection.to;
-
-            int waitTime = this.tram.waitingTime(startTime, this.station);
-
-            this.time = startTime + waitTime;
-        }
-        
         public String toString(){
             int timeofday = time % (60*24),
                 hour = timeofday/60,
@@ -132,6 +132,76 @@ public class TramFinder {
 
         public int compareTo(TramArrival t) {
             return time - t.time;
+        }
+    }
+
+    /** Represents a single arrival/departure of a tram at/from a station*/
+    /*public static class TramTrip implements Comparable<TramTrip>{
+        public final TramNetwork.TramConnection previous;
+        public final TramNetwork.Tram tram;
+        public final TramNetwork.Station from;
+        public final TramNetwork.Station to;
+
+        / Absolute time, in minutes from 00:00, possibly exceeds 24*60
+        public final int time;
+
+        public TramTrip(TramNetwork.Tram tram, TramNetwork.Station from, TramNetwork.Station to, int time) {
+            this.tram = tram;
+            this.from = from;
+            this.to = to;
+            this.time = time;
+        }
+
+        public TramTrip(TramNetwork.TramConnection tramConnection, TramNetwork.TramConnection previous, int startTime)
+        {
+            this.previous = previous;
+            this.tram = tramConnection.tram;
+            this.from = tramConnection.from;
+            this.to = tramConnection.to;
+
+            int waitTime = this.tram.waitingTime(startTime, this.from);
+
+            this.time = startTime + waitTime;
+        }
+
+
+        public String toString(){
+            int timeofday = time % (60*24),
+                    hour = timeofday/60,
+                    minute = timeofday%60;
+
+            return (hour < 10 ? "0"+hour: hour)+":"+(minute < 10 ? "0"+minute: minute)+", Tram "+tram+" at " + to;
+
+        }
+
+        public int compareTo(TramTrip t) {
+            return time - t.time;
+        }
+    }*/
+
+    public static class NodeLengthEdgeTriplet implements Comparable<NodeLengthEdgeTriplet>
+    {
+        public final TramNetwork.Station node;
+        public int time;
+        public TramNetwork.TramConnection edge;
+
+        public NodeLengthEdgeTriplet(TramNetwork.Station node, int time, TramNetwork.TramConnection edge) {
+            this.node = node;
+            this.time = time;
+            this.edge = edge;
+        }
+
+        public void setTime(int time) {
+            this.time = time;
+        }
+
+        public void setEdge(TramNetwork.TramConnection edge) {
+            this.edge = edge;
+        }
+
+        @Override
+        public int compareTo(NodeLengthEdgeTriplet nodeLengthEdgeTriplet) {
+            return Integer.compare(this.time, nodeLengthEdgeTriplet.time);
         }
     }
 }

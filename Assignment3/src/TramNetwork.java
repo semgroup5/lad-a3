@@ -53,6 +53,9 @@ public class TramNetwork{
         }
         
         public int compareTo(Station stop) {
+            if (stop == null) {
+                return 0;
+            }
             return name.compareTo(stop.name);
         }
 
