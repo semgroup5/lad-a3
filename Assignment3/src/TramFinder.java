@@ -1,4 +1,4 @@
-import com.sun.deploy.util.ArrayUtil;
+
 
 import javax.xml.soap.Node;
 import java.util.Arrays;
@@ -19,8 +19,7 @@ public class TramFinder {
 
         //Kickstart the algorithm with all possibilities from the start
         for(TramNetwork.TramConnection tramConnection : from.tramsFrom) {
-
-            tripHeap.add(new NodeLengthEdgeTriplet(from, tramConnection.tram.waitingTime(starttime,tramConnection.to), tramConnection));
+            tripHeap.add(new NodeLengthEdgeTriplet(from, starttime + tramConnection.tram.waitingTime(starttime,from), tramConnection));
         }
 
         NodeLengthEdgeTriplet current = null;
@@ -32,7 +31,7 @@ public class TramFinder {
             {
                 NodeLengthEdgeTriplet NLE = new NodeLengthEdgeTriplet(
                     connection.to,
-                    current.time + connection.timeTaken + connection.tram.waitingTime(current.time, current.node),
+                    current.time + connection.timeTaken + connection.tram.waitingTime(current.time, connection.from),
                     connection);
 
                 tripHeap.add(NLE);
@@ -45,27 +44,22 @@ public class TramFinder {
         }
 
 
-
-        if(current != null) {
-
-        }
-
         NodeLengthEdgeTriplet curr = nodes[to.id];
         int i = 0;
         TramArrival[] path = new TramArrival[nodes.length];
-        NodeLengthEdgeTriplet[] pathnle = new NodeLengthEdgeTriplet[16];
+        path[i++] = new TramArrival(curr.edge.tram, curr.edge.to, curr.time);
         while(!curr.node.equals(from) && i < nodes.length - 1 ) {
-            path[i] = new TramArrival(curr.edge.tram ,curr.node, curr.time);
-            pathnle[i] = curr;
-            i++;
+            path[i++] = new TramArrival(curr.edge.tram ,curr.edge.from, curr.time);
             curr = nodes[curr.edge.from.id];
         }
 
-        for (int j = path.length; j == 0; j--){
-            path[j]= path[path.length - j];
+        i--;
+        TramArrival[] pathReversed = new TramArrival[i+1];
+        for (int j=i; j >= 0; j--){
+            pathReversed[i - j] = path[j];
         }
 
-        return path;
+        return pathReversed;
 
 
     }
