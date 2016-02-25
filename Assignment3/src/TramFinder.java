@@ -17,7 +17,7 @@ public class TramFinder {
 
         //Kickstart the algorithm with all possibilities from the start
         for(TramNetwork.TramConnection tramConnection : from.tramsFrom) {
-            tripHeap.add(new StationTimeConnection(from, starttime + tramConnection.tram.waitingTime(starttime,from), tramConnection));
+            tripHeap.add(new StationTimeConnection(from, starttime + tramConnection.tram.waitingTime(starttime, from), tramConnection));
         }
 
         StationTimeConnection current = null;
@@ -25,19 +25,22 @@ public class TramFinder {
         {
             current = tripHeap.removeMin();
             if(visited[current.station.id]){continue;}
+
             for (TramNetwork.TramConnection connection: current.station.tramsFrom)
             {
                 StationTimeConnection stationTimeConnection = new StationTimeConnection(
                     connection.to,
-                    current.time + current.connection.timeTaken + connection.tram.waitingTime(current.time, connection.from),
+                    current.time + connection.timeTaken + connection.tram.waitingTime(current.time, connection.from),
                     connection);
 
                 tripHeap.add(stationTimeConnection);
-                if(nodes[connection.to.id] == null || stationTimeConnection.compareTo(nodes[connection.to.id]) < 0)
-                {
-                    nodes[connection.to.id] = stationTimeConnection;
-                }
             }
+
+            if(nodes[current.station.id] == null || current.compareTo(nodes[current.station.id]) < 0)
+            {
+                nodes[current.station.id] = current;
+            }
+
             visited[current.station.id] = true;
         }
 
@@ -47,8 +50,8 @@ public class TramFinder {
         TramArrival[] path = new TramArrival[nodes.length];
         path[i++] = new TramArrival(curr.connection.tram, curr.connection.to, curr.time);
         while(!curr.station.equals(from) && i < nodes.length - 1 ) {
-            path[i++] = new TramArrival(curr.connection.tram ,curr.connection.from, curr.time);
             curr = nodes[curr.connection.from.id];
+            path[i++] = new TramArrival(curr.connection.tram, curr.connection.to, curr.time);
         }
 
         i--;
