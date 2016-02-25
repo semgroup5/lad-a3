@@ -19,7 +19,7 @@ public class TramFinder {
 
         //Kickstart the algorithm with all possibilities from the start
         for(TramNetwork.TramConnection tramConnection : from.tramsFrom) {
-            tripHeap.add(new NodeLengthEdgeTriplet(from, starttime + tramConnection.tram.waitingTime(starttime,from), tramConnection));
+            tripHeap.add(new NodeLengthEdgeTriplet(from, starttime + tramConnection.tram.waitingTime(starttime,from), tramConnecKtion));
         }
 
         NodeLengthEdgeTriplet current = null;
