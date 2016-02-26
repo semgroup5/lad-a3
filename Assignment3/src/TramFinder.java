@@ -9,10 +9,8 @@ public class TramFinder {
     
     // Assignment: Implement this!
     public static TramArrival[] fastFindRoute(TramNetwork nw, int starttime, TramNetwork.Station from, TramNetwork.Station to){
-
         Heap<StationTimeConnection> tripHeap = new Heap<StationTimeConnection>();
         StationTimeConnection[] nodes = new StationTimeConnection[nw.stations.length];
-
         boolean[] visited = new boolean[nw.stations.length];
 
         //Kickstart the algorithm with all possibilities from the start
@@ -25,44 +23,53 @@ public class TramFinder {
         {
             current = tripHeap.removeMin();
             if(visited[current.station.id]){continue;}
-
+            //For all connections from this station...
             for (TramNetwork.TramConnection connection: current.station.tramsFrom)
             {
-                StationTimeConnection stationTimeConnection = new StationTimeConnection(
+                //...add them to the heap
+                tripHeap.add(new StationTimeConnection(
                     connection.to,
                     current.time + connection.timeTaken + connection.tram.waitingTime(current.time, connection.from),
-                    connection);
-
-                tripHeap.add(stationTimeConnection);
+                    connection));
             }
 
-            if(nodes[current.station.id] == null || current.compareTo(nodes[current.station.id]) < 0)
-            {
+            //If the path we took to the current node is an improvement...
+            if(nodes[current.station.id] == null || current.compareTo(nodes[current.station.id]) < 0) {
+                //...replace it
                 nodes[current.station.id] = current;
             }
-
+            //Set this node as visited
             visited[current.station.id] = true;
         }
 
+        //Create path array (will never be longer than all the nodes)
+        TramArrival[] path = new TramArrival[nodes.length];
 
+        //Starting from destination
         StationTimeConnection curr = nodes[to.id];
         int i = 0;
-        TramArrival[] path = new TramArrival[nodes.length];
-        path[i++] = new TramArrival(curr.connection.tram, curr.connection.to, curr.time);
-        while(!curr.station.equals(from) && i < nodes.length - 1 ) {
+        for(;i < nodes.length;i++) {
+            //Add the current arrival
+            path[i] = new TramArrival(curr.connection.tram, curr.connection.to, curr.time);
+            //Get the next arrival in the path
             curr = nodes[curr.connection.from.id];
-            path[i++] = new TramArrival(curr.connection.tram, curr.connection.to, curr.time);
+            if(curr == nodes[from.id]){
+                //Add the from node
+                path[++i] = new TramArrival(curr.connection.tram, from, curr.time);
+                //Quit the loop
+                break;
+            }
         }
 
-        i--;
-        TramArrival[] pathReversed = new TramArrival[i+1];
+        //If no path found
+        if(curr != nodes[from.id]){return new TramArrival[0];}
+
+        //Reverse the path
+        TramArrival[] pathReversed = new TramArrival[i+1]; // i is leftover from the for-loop
         for (int j=i; j >= 0; j--){
             pathReversed[i - j] = path[j];
         }
-
         return pathReversed;
-
-
     }
 
 
